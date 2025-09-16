@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zhonghua SIL Portal</title>
+  
+  <!-- STYLESHEETS COMBINED -->
+  <style>
+    /* --- START: LoginStylesheet.css --- */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    
+    :root {
+        --c-login-bg: #111827;
+        --c-login-text: #F9FAFB;
+        --c-login-text-secondary: #9CA3AF;
+        --c-showcase-bg: #F0FDF4;
+        --c-primary: #22c55e;
+        --c-primary-dark: #16a34a;
+        --c-gradient-start: #3b82f6;
+        --c-gradient-mid: #16a34a;
+        --c-gradient-end: #f59e0b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body, html {
+        height: 100%;
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--c-login-bg);
+        color: var(--c-login-text);
+        overflow: hidden;
+    }
+
+    .login-container {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        background: var(--c-login-bg);
+        transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    }
+    .login-container.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .login-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 5rem;
+        max-width: 650px;
+    }
+    
+    .login-content { max-width: 400px; }
+    .login-header h3 { font-size: 1rem; font-weight: 600; color: var(--c-primary); margin-bottom: 0.75rem; animation: fadeInSlideUp 0.6s 0.2s ease-out backwards; }
+    .login-header h1 { font-size: 3rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.2; animation: fadeInSlideUp 0.6s 0.4s ease-out backwards; }
+    .login-header p { color: var(--c-login-text-secondary); margin-bottom: 2rem; line-height: 1.6; animation: fadeInSlideUp 0.6s 0.6s ease-out backwards; }
+    
+    .login-actions { animation: fadeInSlideUp 0.6s 0.8s ease-out backwards; }
+    .mock-login-options { display: flex; flex-direction: column; gap: 1rem; }
+    .btn-login {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        background-color: #374151;
+        color: var(--c-login-text);
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 28px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .btn-login:hover { background-color: #4b5563; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+    .btn-login:active { transform: translateY(-1px); }
+    .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+    
+    .login-status { margin-top: 1.5rem; min-height: 24px; color: var(--c-login-text-secondary); font-weight: 500; }
+    .showcase-panel { flex: 1.5; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; padding: 2rem; }
+    .showcase-gradient { position: absolute; inset: -250px; background: linear-gradient(45deg, var(--c-gradient-start), var(--c-gradient-mid), var(--c-gradient-end)); animation: rotateGradient 25s ease infinite; }
+    .feature-list { position: relative; list-style: none; display: flex; flex-direction: column; gap: 1.25rem; color: #064e3b; font-weight: 500; max-width: 450px; }
+    .feature-list li { display: flex; align-items: center; gap: 1rem; background-color: rgba(255,255,255,0.3); padding: 0.875rem 1rem; border-radius: 12px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.5); animation: fadeInSlideUp 0.6s ease-out backwards; }
+    .feature-list li:nth-child(1) { animation-delay: 1s; } .feature-list li:nth-child(2) { animation-delay: 1.1s; } .feature-list li:nth-child(3) { animation-delay: 1.2s; } .feature-list li:nth-child(4) { animation-delay: 1.3s; } .feature-list li:nth-child(5) { animation-delay: 1.4s; } .feature-list li:nth-child(6) { animation-delay: 1.5s; }
+    .feature-list li svg { flex-shrink: 0; width: 24px; height: 24px; color: var(--c-primary-dark); }
+    @keyframes rotateGradient { 0% { transform: rotate(0deg) scale(1.5); } 50% { transform: rotate(180deg) scale(1.6); } 100% { transform: rotate(360deg) scale(1.5); } }
+    @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 900px) { .showcase-panel { display: none; } .login-panel { max-width: 100%; align-items: center; text-align: center; } }
+
+    /* --- END: LoginStylesheet.css --- */
+    /* --- START: Stylesheet.css --- */
+    :root {
+        --font-main: 'Poppins', sans-serif;
+        --c-bg: #F8FAFC;
+        --c-surface: #FFFFFF;
+        --c-surface-2: #F1F5F9;
+        --c-text-primary: #0F172A;
+        --c-text-secondary: #64748B;
+        --c-border: #E2E8F0;
+        --c-primary: #16a34a;
+        --c-primary-light: #dcfce7;
+        --c-primary-dark: #14532d;
+        --c-accent-blue: #2563eb;
+        --c-accent-blue-light: #dbeafe;
+        --c-accent-purple: #7c3aed;
+        --c-accent-purple-light: #ede9fe;
+        --c-accent-amber: #d97706;
+        --c-accent-amber-light: #fef3c7;
+        --c-shadow: rgba(45, 55, 72, 0.08);
+        --c-shadow-hover: rgba(45, 55, 72, 0.12);
+        --c-danger: #e11d48;
+        --c-warning: #f97316;
+        --c-warning-bg: #fff7ed;
+        --c-admin-gold: #f59e0b;
+        --c-staff-blue: #3b82f6;
+    }
+
+    body.dark-mode {
+        --c-bg: #0F172A;
+        --c-surface: #1E293B;
+        --c-surface-2: #283447;
+        --c-text-primary: #F1F5F9;
+        --c-text-secondary: #94A3B8;
+        --c-border: #475569;
+        --c-primary: #4ade80;
+        --c-primary-light: rgba(74, 222, 128, 0.1);
+        --c-primary-dark: #22c55e;
+        --c-accent-blue: #60a5fa;
+        --c-accent-blue-light: rgba(96, 165, 250, 0.1);
+        --c-accent-purple: #a78bfa;
+        --c-accent-purple-light: rgba(167, 139, 250, 0.1);
+        --c-accent-amber: #fbbf24;
+        --c-accent-amber-light: rgba(251, 191, 36, 0.1);
+        --c-danger: #fb7185;
+        --c-warning: #fb923c;
+        --c-warning-bg: #431f0c;
+    }
+    
+    body { transition: background-color 0.3s, color 0.3s; }
+    body:not(.login-active) {
+      background-color: var(--c-bg);
+      background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)), url("https://i.imgur.com/scKYcYg.jpeg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--c-text-primary);
+    }
+    body.dark-mode:not(.login-active) { background-image: linear-gradient(180deg, #111827 0%, #0F172A 100%); }
+    .background-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 10% 20%, var(--c-primary-light), transparent 40%), radial-gradient(circle at 80% 90%, var(--c-accent-blue-light), transparent 40%), radial-gradient(circle at 90% 10%, var(--c-accent-purple-light), transparent 30%); opacity: 0.7; transition: opacity 0.5s; }
+    body.dark-mode .background-gradient { opacity: 0; }
+    #app-container { transition: opacity 0.4s ease-in-out; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 80px 24px 24px 24px; }
+    .is-hidden { display: none !important; }
+    .section-title { font-size: 2rem; font-weight: 700; color: var(--c-text-primary); margin-bottom: 2rem; text-align: center; }
+    .view { opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease, transform 0.4s ease; }
+    .view:not(#homepage) { background: var(--c-surface); border-radius: 16px; padding: 32px; box-shadow: 0 4px 25px var(--c-shadow); border: 1px solid var(--c-border); margin-top: 20px; }
+    .view#notepad { background: transparent; border: none; box-shadow: none; padding: 0; }
+    .view.is-active { opacity: 1; transform: translateY(0); }
+    
+    .theme-toggle-button { position: fixed; bottom: 20px; right: 20px; z-index: 1001; background: var(--c-surface); border: 1px solid var(--c-border); width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 12px var(--c-shadow); transition: all 0.3s ease; overflow: hidden; }
+    .theme-toggle-button:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 16px var(--c-shadow-hover); }
+    .theme-toggle-button .icon { color: var(--c-text-secondary); user-select: none; }
+    .theme-toggle-button .sun-icon { display: block; }
+    .theme-toggle-button .moon-icon { display: none; }
+    body.dark-mode .theme-toggle-button .sun-icon { display: none; }
+    body.dark-mode .theme-toggle-button .moon-icon { display: block; }
+
+    #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10001; transition: opacity 0.5s ease; background: var(--c-bg); color: var(--c-text-primary); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1rem; }
+    #loading-overlay:not(.is-active) { opacity: 0; pointer-events: none; }
+    .loader { border: 6px solid var(--c-border); border-top: 6px solid var(--c-primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    body.is-logging-out #app-container { opacity: 0; }
+    body.is-logging-out .background-gradient { opacity: 0; }
+
+    .btn { background: var(--c-primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn:hover { background: var(--c-primary-dark); transform: translateY(-2px); box-shadow: 0 4px 10px var(--c-shadow); }
+    .btn.btn-outline { background: var(--c-surface); border: 2px solid var(--c-border); color: var(--c-text-secondary); }
+    .btn.btn-outline:hover { background: var(--c-surface-2); color: var(--c-text-primary); border-color: var(--c-text-secondary); }
+    .btn.btn-danger { background: var(--c-danger); border-color: var(--c-danger); color: white; }
+    .btn.btn-danger:hover { opacity: 0.8; }
+    
+    .welcome-section { text-align: center; padding: 1.5rem; margin-bottom: 2.5rem; }
+    .welcome-title { font-size: 2.5rem; font-weight: 700; color: var(--c-text-primary); }
+    .welcome-subtitle { color: var(--c-text-secondary); font-size: 1.1rem; }
+    
+    .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .home-card { background-color: var(--c-surface); border: 1px solid var(--c-border); border-radius: 12px; padding: 24px; text-decoration: none; color: var(--c-text-primary); box-shadow: 0 4px 12px var(--c-shadow); transition: all 0.3s ease; display: flex; align-items: center; gap: 16px; cursor: pointer; text-align: left; }
+    .home-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px var(--c-shadow-hover); border-color: var(--c-primary); }
+    .home-card-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; flex-shrink: 0; justify-content: center; align-items: center; transition: all 0.3s ease; }
+    .home-card:hover .home-card-icon { transform: scale(1.1) rotate(5deg); }
+    .home-card-title { font-size: 1.1rem; font-weight: 600; }
+    .home-card-description { font-size: 0.9rem; color: var(--c-text-secondary); line-height: 1.5; }
+    .home-card[data-view="notepad"] .home-card-icon, .home-card[data-view="comment"] .home-card-icon { background: var(--c-accent-blue-light); color: var(--c-accent-blue); }
+    .home-card[data-view="resources"] .home-card-icon { background: var(--c-accent-purple-light); color: var(--c-accent-purple); }
+    .home-card[data-view="submit"] .home-card-icon { background: var(--c-accent-amber-light); color: var(--c-accent-amber); }
+    .home-card[data-view="dashboard"] .home-card-icon, .home-card[data-view="statistics"] .home-card-icon, .home-card[data-action="start-tutorial"] .home-card-icon { background: var(--c-primary-light); color: var(--c-primary); }
+
+    .taskbar { background: var(--c-surface); border-radius: 16px; padding: 6px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--c-border); box-shadow: 0 4px 12px var(--c-shadow); }
+    .taskbar-tabs { display: flex; flex-grow: 1; gap: 8px; }
+    .taskbar-tab { flex-grow: 1; padding: 8px 14px; font-weight: 600; font-size: 13px; color: var(--c-text-secondary); background: transparent; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .taskbar-tab:hover:not(.active) { background: var(--c-surface-2); color: var(--c-text-primary); }
+    .taskbar-tab.active { background: linear-gradient(45deg, var(--c-primary-dark), var(--c-primary)); color: white; box-shadow: 0 5px 15px -5px var(--c-primary); transform: scale(1.03); }
+    .taskbar-actions { display: flex; align-items: center; gap: 12px; }
+    #taskbar-status-badge { font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid transparent; }
+    #taskbar-status-badge.status-badge--admin { background: var(--c-admin-gold); color: #78350f; border-color: #f59e0b; }
+    body.dark-mode #taskbar-status-badge.status-badge--admin { color: #1e293b; }
+    #taskbar-status-badge.status-badge--staff { background: var(--c-staff-blue); color: white; border-color: #2563eb; }
+    
+    .btn-logout { position: fixed; bottom: 20px; right: 82px; z-index: 1001; background: var(--c-surface); border: 1px solid var(--c-border); width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; padding: 0; color: var(--c-text-secondary); box-shadow: 0 4px 12px var(--c-shadow); transition: all 0.3s ease; }
+    .btn-logout:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 16px var(--c-shadow-hover); color: var(--c-danger); }
+    .btn-logout:disabled { cursor: wait; opacity: 0.5; }
+
+    .notepad-container { background: var(--c-surface); border-radius: 16px; box-shadow: 0 4px 25px var(--c-shadow); padding: 32px; display: flex; flex-direction: column; height: 75vh; }
+    .notepad-editor { flex-grow: 1; display: flex; flex-direction: column; margin-bottom: 1rem; }
+    #note-textarea { flex-grow: 1; width: 100%; background: var(--c-surface-2); color: var(--c-text-primary); border-radius: 12px; border: 1px solid var(--c-border); padding: 1rem; font-size: 1rem; font-family: var(--font-main); line-height: 1.6; resize: vertical; transition: border-color 0.3s, box-shadow 0.3s; }
+    #note-textarea:focus { outline: none; border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-light); }
+    .notepad-toolbar { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .notepad-actions { display: flex; gap: 12px; }
+    .word-counter-display { font-size: 0.9rem; font-weight: 500; color: var(--c-text-secondary); background: var(--c-surface-2); padding: 8px 16px; border-radius: 20px; }
+    #message-area { text-align: center; margin-top: 1.5rem; padding: 12px; border-radius: 8px; font-weight: 500; transition: opacity 0.3s; }
+    #message-area.success { background-color: var(--c-primary-light); color: var(--c-primary-dark); }
+    #message-area.error { background-color: #fee2e2; color: #b91c1c; }
+    body.dark-mode #message-area.error { background-color: #5f2121; color: #fecaca; }
+
+    .resources-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .resources-buttons .btn { min-width: 240px; }
+    .back-button { position: fixed; top: 24px; left: 24px; z-index: 1000; padding: 8px 16px; }
+    .statistics-container { display: flex; flex-direction: column; gap: 16px; }
+    .stat-student-row { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 12px; transition: all 0.3s ease; overflow: hidden; }
+    .stat-student-row:hover { border-color: var(--c-primary); transform: translateY(-2px); box-shadow: 0 4px 12px var(--c-shadow); }
+    .stat-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; cursor: pointer; }
+    .stat-header.is-open { border-bottom: 1px solid var(--c-border); }
+    .stat-header-name { color: var(--c-text-primary); font-weight: 600; }
+    .stat-header-email { color: var(--c-text-secondary); font-size: 0.85rem; }
+    .stat-header-info { display: flex; align-items: center; gap: 1rem; }
+    .stat-toggle-icon { color: var(--c-text-secondary); transition: transform 0.3s ease; }
+    .stat-submission-count { background: var(--c-primary-light); color: var(--c-primary-dark); border-radius: 20px; padding: 4px 12px; font-size: 0.8rem; font-weight: 600; }
+    .stat-submissions-list { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; background: var(--c-surface-2); }
+    .stat-submissions-list.is-open { max-height: 4000px; }
+    .details-inner-wrapper { padding: 24px; }
+    .detail-item { margin-bottom: 1.25rem; }
+    .detail-label { color: var(--c-primary); font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; text-transform: uppercase; }
+    .detail-text { color: var(--c-text-primary); white-space: pre-wrap; }
+    .teacher-comment-card { background: var(--c-warning-bg); border-left: 4px solid var(--c-warning); margin-top: 16px; padding: 16px; border-radius: 8px;}
+    .teacher-comment-card .detail-label { color: var(--c-warning); }
+    .teacher-comment-card.unread-comment { border-left-color: var(--c-danger); } /* Visual for unread */
+
+    .comment-icon-wrapper { color: var(--c-warning); }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    .comment-icon-wrapper.is-pulsing { animation: pulse 1.5s infinite; }
+
+    .user-info-card { background: linear-gradient(135deg, var(--c-primary-dark), var(--c-primary)); color: white; border-radius: 16px; padding: 24px 32px; box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3); }
+    .user-info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .user-info-name { font-size: 1.2rem; font-weight: 600; }
+    .user-info-sil { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; }
+    .user-info-latest h4 { font-size: 1rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 0.5rem; }
+    
+    .form-container iframe { border-radius: 12px; border: 1px solid var(--c-border); }
+    .student-list-header { display:flex; justify-content:center; align-items:center; position:relative; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--c-border);}
+    .student-list-header .btn {position:absolute; left:0;}
+    .student-list-header .section-title { margin:0; }
+    .class-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .class-card { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 12px; padding: 24px; cursor: pointer; transition: all 0.2s ease-in-out; text-align: left; width: 100%; }
+    .class-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px var(--c-shadow-hover); border-color: var(--c-primary); }
+    .class-card-name { font-size: 1.1rem; font-weight: 600; color: var(--c-primary); margin-bottom: 8px; }
+    .class-card-count { font-size: 0.9rem; color: var(--c-text-secondary); }
+    .btn-comment { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background-color: var(--c-warning-bg); color: var(--c-warning); border: 1px solid var(--c-warning); border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .btn-comment.has-comment { background-color: var(--c-warning); color: white; }
+    .btn-comment:hover { background-color: var(--c-warning); color: white; transform: scale(1.05); }
+    .submission-entry { padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px dashed var(--c-border); }
+    .submission-actions { margin-top: 1.5rem; }
+    
+    .comment-view-header { margin-bottom: 1.5rem; }
+    .comment-for-student { text-align: center; margin-bottom: 1.5rem; padding: 1rem; background: var(--c-surface-2); border-radius: 12px; }
+    .reflection-preview { padding: 1.5rem; border: 1px solid var(--c-border); border-radius: 12px; margin-bottom: 1.5rem; background: var(--c-surface); }
+    .previous-comments-container { margin-top: 1.5rem; padding: 1.5rem; border: 1px solid var(--c-border); border-radius: 12px; background: var(--c-surface-2); }
+    .previous-comment-item { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--c-border); }
+    .previous-comment-item:first-of-type { margin-top:0; padding-top:0; border-top: none; }
+    .commenter-name { font-weight: bold; font-size: 0.9rem; color: var(--c-text-secondary); }
+    .comment-text { white-space: pre-wrap; }
+    #comment-textarea { width: 100%; height: 180px; margin-bottom: 1rem; background: var(--c-surface-2); color: var(--c-text-primary); border: 1px solid var(--c-border); border-radius: 12px; padding: 1rem; }
+    .comment-actions { display: flex; justify-content: flex-end; }
+    
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 1; transition: opacity 0.3s; }
+    .modal-overlay.is-hidden { opacity: 0; pointer-events: none; }
+    .modal-box { background: var(--c-surface); color: var(--c-text-primary); border-radius: 16px; padding: 32px; max-width: 500px; width: 90%; text-align: center; transform: scale(1); transition: transform 0.3s; }
+    .modal-overlay.is-hidden .modal-box { transform: scale(0.9); }
+    .modal-header { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .modal-icon-wrapper { width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+    .modal-icon-wrapper.error { background: #fee2e2; color: var(--c-danger); }
+    .modal-icon-wrapper.info { background: var(--c-accent-blue-light); color: var(--c-accent-blue); }
+    .modal-box h3 { font-size: 1.5rem; }
+    .modal-box p { color: var(--c-text-secondary); margin-bottom: 2rem; line-height: 1.6; }
+    .modal-buttons { display: flex; justify-content: center; gap: 1rem; }
+
+    .tutorial-content { text-align: left; margin-bottom: 2rem; }
+    .tutorial-content ol { list-style-position: inside; padding-left: 0; }
+    .tutorial-content li { margin-bottom: 1rem; line-height: 1.5; color: var(--c-text-secondary); }
+    .tutorial-content strong { color: var(--c-text-primary); }
+
+    .notification-dot { width: 10px; height: 10px; background-color: var(--c-danger); border-radius: 50%; border: 2px solid var(--c-surface); transform: scale(0); transition: transform 0.3s; }
+    .taskbar-tab.active .notification-dot { border-color: var(--c-primary); }
+    .notification-dot.is-visible { transform: scale(1); }
+    .placeholder-content { padding: 4rem 2rem; text-align: center; border: 2px dashed var(--c-border); border-radius: 16px; }
+    .placeholder-icon-wrapper { font-size: 3rem; margin-bottom: 1rem; }
+    .placeholder-content h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .placeholder-content p { color: var(--c-text-secondary); max-width: 400px; margin: 0 auto; }
+    
+    .role-student .staff-admin-tab, .role-student .staff-admin-view-card, .role-student .staff-tab, .role-student .staff-view-card,
+    .role-staff .student-tab, .role-staff .student-view-card, .role-staff .admin-tab, .role-staff .admin-view-card,
+    .role-admin .staff-tab, .role-admin .staff-view-card { display: none !important; }
+    /* --- END: Stylesheet.css --- */
+  </style>
+</head>
+<body class="login-active">
+  <!-- MOCK LOGIN PAGE -->
+  <div id="login-screen" class="login-container">
+    <div class="login-panel">
+      <div class="login-content">
+        <div class="login-header">
+          <h3>Zhonghua SIL Portal</h3>
+          <h1>SIL,<br>Reimagined.</h1>
+          <p>This is a static demo. Please select a role to continue.</p>
+        </div>
+        <div class="login-actions">
+          <div class="mock-login-options">
+            <button id="login-student" class="btn-login" data-role="student">
+              <span>Sign in as Student</span>
+            </button>
+            <button id="login-staff" class="btn-login" data-role="staff">
+              <span>Sign in as Staff</span>
+            </button>
+            <button id="login-admin" class="btn-login" data-role="admin">
+              <span>Sign in as Admin</span>
+            </button>
+          </div>
+        </div>
+        <div id="login-status" class="login-status"></div>
+      </div>
+    </div>
+    <div class="showcase-panel">
+      <div class="showcase-gradient"></div>
+      <ul class="feature-list">
+          <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg><span>View all your SIL submissions in one dashboard.</span></li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>Receive and review teacher feedback instantly.</span></li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg><span>Use the Draft Pad to write & save reflections anytime.</span></li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Teachers can oversee class and student progress seamlessly.</span></li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>Access SIL reflection resources and official guides.</span></li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10V3H3v18h10"></path><path d="M21 10l-10 4-10-4"></path><path d="M17 22v-5l-3 1.5L17 17l3-1.5-3 1.5"></path></svg><span>Submit your final reflections directly through the portal.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MAIN APPLICATION CONTENT (Initially hidden) -->
+  <div id="main-app" style="display: none;">
+    <div class="background-gradient"></div>
+    <main class="container" id="app-container">
+      
+      <!-- Taskbar Navigation (LOGOUT BUTTON REMOVED FROM HERE) -->
+      <nav class="taskbar is-hidden">
+        <div class="taskbar-tabs">
+          <button class="taskbar-tab student-tab admin-tab" data-view="dashboard"><span>Dashboard</span><span class="notification-dot"></span></button>
+          <button class="taskbar-tab student-tab" data-view="resources"><span>Reflections</span></button>
+          <button class="taskbar-tab student-tab" data-view="notepad"><span>Draft Pad</span></button>
+          <button class="taskbar-tab student-tab" data-view="submit"><span>Submit</span></button>
+          <button class="taskbar-tab staff-admin-tab" data-view="statistics"><span>Submissions</span></button>
+          <button class="taskbar-tab staff-tab" data-view="comment"><span>Comment</span></button>
+        </div>
+        <div class="taskbar-actions">
+          <div id="taskbar-status-badge"></div>
+          <!-- The logout button is no longer here -->
+        </div>
+      </nav>
+  
+      <!-- Back Button -->
+      <button class="back-button btn btn-outline is-hidden" data-view="homepage">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>Home</span>
+      </button>
+      
+      <!-- Homepage View -->
+      <section id="homepage" class="view is-active">
+          <div class="welcome-section">
+              <h1 class="welcome-title">Zhonghua SIL Portal</h1>
+              <p class="welcome-subtitle">Welcome, <span id="user-name">[User]</span></p>
+          </div>
+          <div class="home-grid">
+              <button class="home-card student-view-card admin-view-card" data-view="dashboard">
+                  <div class="home-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
+                  <div class="home-card-content">
+                      <div class="home-card-title">Dashboard</div>
+                      <div class="home-card-description">View your personal submissions</div>
+                  </div>
+              </button>
+              <button class="home-card student-view-card" data-view="notepad">
+                  <div class="home-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></div>
+                  <div class="home-card-content">
+                      <div class="home-card-title">Draft Pad</div>
+                      <div class="home-card-description">Write and auto-save your reflections</div>
+                  </div>
+              </button>
+              <button class="home-card student-view-card" data-view="resources">
+                  <div class="home-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+                  <div class="home-card-content">
+                      <div class="home-card-title">Reflections</div>
+                      <div class="home-card-description">Access reflection templates and resources</div>
+                  </div>
+              </button>
+              <button class="home-card student-view-card" data-view="submit">
+                  <div class="home-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
+                  <div class="home-card-content">
+                      <div class="home-card-title">Submit Reflection</div>
+                      <div class="home-card-description">Submit your completed reflection</div>
+                  </div>
+              </button>
+              <button class="home-card staff-admin-view-card" data-view="statistics">
+                  <div class="home-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                  <div class="home-card-content">
+                      <div class="home-card-title">View Submissions</div>
+                      <div class="home-card-description">Oversee student progress</div>
+                  </div>
+              </button>
+              <button class="home-card" data-action="start-tutorial">
+                  <div class="home-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+                  <div class="home-card-content">
+                      <div class="home-card-title">How to Use</div>
+                      <div class="home-card-description">A quick guide on how to use this portal</div>
+                  </div>
+              </button>
+          </div>
+      </section>
+      
+      <!-- Other Views -->
+      <section id="dashboard" class="view is-hidden"><div class="content-wrapper"></div></section>
+      <section id="resources" class="view is-hidden"><div class="section-title">Reflection Resources</div><div class="resources-buttons"><a href="https://sites.google.com/moe.edu.sg/zhonghua-sil/home/sec-1" target="_blank" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>Sec 1 Reflections</span></a><a href="https://sites.google.com/moe.edu.sg/zhonghua-sil/home/sec-2-5" target="_blank" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span>Sec 2–5 Reflections</span></a></div></section>
+      <section id="notepad" class="view is-hidden">
+        <div class="section-title">Reflection Draft Pad</div>
+        <div class="notepad-container"><div class="notepad-editor"><textarea id="note-textarea" placeholder="Start writing your reflection here..."></textarea></div><div class="notepad-toolbar"><div class="notepad-actions"><button class="btn btn-primary" data-action="save-note">Save</button><button class="btn btn-outline" data-action="load-note">Load</button><button class="btn btn-outline" data-action="clear-editor">Clear</button><button class="btn btn-outline" data-action="export-text">Export</button></div><div id="word-counter" class="word-counter-display">0 words</div></div></div>
+        <div id="message-area" class="message"></div>
+      </section>
+      <section id="submit" class="view is-hidden"><div class="section-title">Submit Your Reflection</div><div class="form-container"><iframe src="https://docs.google.com/forms/d/e/1FAIpQLScMYTlkhuYVC8UKQC6Ul4rkefoxiYpLOVzGx1j6Czvn67wAog/viewform?embedded=true" width="100%" height="800" frameborder="0">Loading...</iframe></div></section>
+      <section id="statistics" class="view is-hidden"><div class="content-wrapper"></div></section>
+      <section id="comment" class="view is-hidden"><div class="content-wrapper"></div></section>
+    </main>
+  
+    <!-- Modals -->
+    <div id="confirm-clear-modal" class="modal-overlay is-hidden"><div class="modal-box"><div class="modal-header"><div class="modal-icon-wrapper error"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div><h3>Are you sure?</h3></div><p>This will permanently delete your saved draft from this browser. This action cannot be undone.</p><div class="modal-buttons"><button class="btn btn-outline" data-action="close-modal">Cancel</button><button class="btn btn-danger" data-action="confirm-clear">Yes, Delete</button></div></div></div>
+    <div id="tutorial-modal" class="modal-overlay is-hidden"><div class="modal-box"><div class="modal-header"><div class="modal-icon-wrapper info"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div><h3 id="tutorial-title">Portal Guide</h3></div><div id="tutorial-content" class="tutorial-content"></div><div class="modal-buttons"><button class="btn btn-primary" data-action="close-modal">Got it!</button></div></div></div>
+  
+    <!-- ACTION BUTTONS MOVED HERE -->
+    <div class="fixed-action-buttons">
+      <button id="logout-button" class="btn-logout" data-action="logout" title="Logout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+      </button>
+      <button id="theme-toggle" class="theme-toggle-button" aria-label="Toggle theme">
+          <span class="icon sun-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </span>
+          <span class="icon moon-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </span>
+      </button>
+    </div>
+  
+    <!-- Templates -->
+    <template id="template-user-info-card"><div class="user-info-card"><div class="user-info-header"><div class="user-info-name" data-field="user-name-and-role"></div><div class="user-info-sil" data-field="latest-sil-number"></div></div><div class="user-info-latest"><h4>Your Latest Reflection (<span data-field="latest-sil-tier"></span>)</h4><div class="detail-item"><div class="detail-label">What I did and learned</div><div class="detail-text" data-field="learn"></div></div><div class="detail-item"><div class="detail-label">Challenge Faced</div><div class="detail-text" data-field="challenge"></div></div><div class="detail-item"><div class="detail-label">How I want to grow</div><div class="detail-text" data-field="grow"></div></div></div></div></template>
+    <template id="template-dashboard-item"><div class="stat-student-row"><div class="stat-header" data-action="toggle-details"><div><div class="stat-header-name"></div><div class="stat-header-email"></div></div><div class="stat-header-info"><span class="comment-icon-wrapper is-hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span><span class="stat-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span></div></div><div class="stat-submissions-list"><div class="details-inner-wrapper"><div class="detail-item"><div class="detail-label">What I did and learned</div><div class="detail-text" data-field="learn"></div></div><div class="detail-item"><div class="detail-label">Challenge Faced</div><div class="detail-text" data-field="challenge"></div></div><div class="detail-item"><div class="detail-label">How I want to grow</div><div class="detail-text" data-field="grow"></div></div><div class="teacher-comment-card is-hidden"><div class="detail-label">Teacher's Comment</div><div class="detail-text" data-field="comment"></div></div></div></div></div></template>
+    <template id="template-class-card"><button class="class-card"><div class="class-card-name"></div><div class="class-card-count"></div></button></template>
+    <template id="template-student-row"><div class="stat-student-row"><div class="stat-header" data-action="toggle-details"><div><div class="stat-header-name"></div><div class="stat-header-email"></div></div><div class="stat-header-info"><span class="comment-icon-wrapper is-hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span><span class="stat-submission-count"></span><span class="stat-toggle-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span></div></div><div class="stat-submissions-list"><div class="details-inner-wrapper"></div></div></div></template>
+    <template id="template-submission-entry"><div class="submission-entry"><div class="detail-item"><div class="detail-label" data-field="sil-number-ts"></div></div><div class="detail-item"><div class="detail-label">What I did and learned</div><div class="detail-text" data-field="learn"></div></div><div class="detail-item"><div class="detail-label">Challenge Faced</div><div class="detail-text" data-field="challenge"></div></div><div class="detail-item"><div class="detail-label">How I want to grow</div><div class="detail-text" data-field="grow"></div></div><div class="submission-actions"></div></div></template>
+    <template id="template-comment-view"><div class="comment-view-header"><button class="btn btn-outline" data-action="back-to-student-list">← Back to Student List</button></div><h3 class="section-title">Leave a Comment</h3><div class="comment-for-student"><h4>For: <strong data-field="student-name"></strong> (<span data-field="student-email"></span>)</h4><p>On Submission: <strong data-field="sil-number"></strong></p></div><div class="reflection-preview"><div class="detail-item"><div class="detail-label">What I did and learned</div><div class="detail-text" data-field="learn"></div></div><div class="detail-item"><div class="detail-label">Challenge Faced</div><div class="detail-text" data-field="challenge"></div></div><div class="detail-item"><div class="detail-label">How I want to grow</div><div class="detail-text" data-field="grow"></div></div></div><div class="comment-input-area"><textarea id="comment-textarea" placeholder="Enter your new feedback here..."></textarea><div class="comment-actions"><button class="btn btn-primary" data-action="submit-comment">Save Comment</button></div></div></template>
+    <template id="template-placeholder"><div class="placeholder-content"><div class="placeholder-icon-wrapper"></div><h3></h3><p></p></div></template>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    // --- START: MOCK BACKEND FOR GITHUB PAGES ---
+    // This object simulates the Google Apps Script backend.
+    const MOCK_DATA = {
+        currentUserRole: 'student', // Default role
+        users: {
+            student: { name: 'Alex Tan', email: 'alex.tan@mims.student.edu.sg', role: 'student' },
+            staff: { name: 'Ms. Chen', email: 'chen.wei@mims.teacher.edu.sg', role: 'staff' },
+            admin: { name: 'Mr. David Lim', email: 'david.lim@mims.admin.edu.sg', role: 'admin' },
+        },
+        studentData: {
+            'alex.tan@mims.student.edu.sg': {
+                hasUnreadComments: true,
+                submissions: [
+                    { submissionId: 'sub1', timestamp: '2023-10-26T09:00:00Z', silNumber: 'SIL #1', tier: 'Bronze', learn: 'I learned about Python loops during my coding project.', challenge: 'It was hard to debug a specific error.', grow: 'I want to practice more debugging techniques.', comment: [] },
+                    { submissionId: 'sub2', timestamp: '2023-11-05T11:30:00Z', silNumber: 'SIL #2', tier: 'Bronze', learn: 'I volunteered at the animal shelter and learned to care for cats.', challenge: 'Waking up early on a Saturday was tough.', grow: 'I want to continue volunteering and be more disciplined.', comment: [{ text: 'Great work, Alex! It\'s wonderful to see you contributing to the community.', status: 'unread', commenter: 'Ms. Chen' }] },
+                ]
+            }
+        },
+        statisticsData: {
+            '4 Integrity 1': [
+                { name: 'Benny Goh', email: 'benny.goh@mims.student.edu.sg', class: '4 Integrity 1', submissions: [ { submissionId: 'sub3', timestamp: '2023-11-01T14:00:00Z', silNumber: 'SIL #1', learn: 'Learned to play the guitar.', challenge: 'Fingers hurt a lot.', grow: 'Practice chords daily.', comment: [] } ]},
+                { name: 'Clara Ong', email: 'clara.ong@mims.student.edu.sg', class: '4 Integrity 1', submissions: [] }
+            ],
+            '3 Resilience 2': [
+                { name: 'Alex Tan', email: 'alex.tan@mims.student.edu.sg', class: '3 Resilience 2', submissions: MOCK_DATA.studentData['alex.tan@mims.student.edu.sg'].submissions }
+            ]
+        },
+    };
+
+    const mockApi = {
+        run(functionName, ...args) {
+            return new Promise((resolve, reject) => {
+                console.log(`MOCK API CALL: ${functionName}`, args);
+                if (this[functionName]) {
+                    setTimeout(() => resolve(this[functionName](...args)), 300); // Simulate network delay
+                } else {
+                    reject(new Error(`Mock function ${functionName} not found.`));
+                }
+            });
+        },
+
+        getUserData() {
+            return MOCK_DATA.users[MOCK_DATA.currentUserRole];
+        },
+        
+        getLogoutUrl() {
+            // In a static site, "logout" just means reloading the page.
+            return window.location.href;
+        },
+
+        getDashboardDataForUser() {
+            const user = MOCK_DATA.users[MOCK_DATA.currentUserRole];
+            if (user.role === 'student' || user.role === 'admin') {
+                const studentEmail = user.email;
+                const data = MOCK_DATA.studentData[studentEmail] || { submissions: [], hasUnreadComments: false };
+                const latestSubmission = data.submissions.length > 0 ? data.submissions[data.submissions.length - 1] : null;
+                return { ...user, ...data, latestSubmission, error: null };
+            }
+            return { ...user, submissions: [], latestSubmission: null, hasUnreadComments: false, error: null };
+        },
+
+        getStatisticsData() {
+            const user = MOCK_DATA.users[MOCK_DATA.currentUserRole];
+            if (user.role === 'student') return { data: {}, error: 'Access Denied.' };
+            if (user.role === 'admin') return { data: MOCK_DATA.statisticsData, error: null };
+            if (user.role === 'staff') {
+                // Staff only sees their assigned class
+                const assignedClassData = { '4 Integrity 1': MOCK_DATA.statisticsData['4 Integrity 1'] };
+                return { data: assignedClassData, error: null };
+            }
+            return { data: {}, error: 'Unknown role.' };
+        },
+        
+        saveComment(submissionId, commentText) {
+            const user = MOCK_DATA.users[MOCK_DATA.currentUserRole];
+            const newComment = { text: commentText, status: 'unread', commenter: user.name };
+            
+            // Find the submission and add the comment (this is complex in mock data)
+            for (const className in MOCK_DATA.statisticsData) {
+                MOCK_DATA.statisticsData[className].forEach(student => {
+                    const sub = student.submissions.find(s => s.submissionId === submissionId);
+                    if (sub) {
+                        sub.comment.push(newComment);
+                    }
+                });
+            }
+            return { success: true, message: 'Comment saved.', error: null };
+        },
+        
+        markCommentAsRead(submissionId) {
+            const studentEmail = MOCK_DATA.users.student.email;
+            const sub = MOCK_DATA.studentData[studentEmail].submissions.find(s => s.submissionId === submissionId);
+            if (sub && sub.comment) {
+                sub.comment.forEach(c => c.status = 'read');
+                MOCK_DATA.studentData[studentEmail].hasUnreadComments = false;
+            }
+            return { success: true, error: null };
+        },
+        
+        // Replace PropertiesService with localStorage
+        saveUserNote(content) {
+            localStorage.setItem('zh-portal-notepad', content);
+            return { success: true, message: 'Note saved to browser.' };
+        },
+
+        loadUserNote() {
+            const content = localStorage.getItem('zh-portal-notepad') || '';
+            return { success: true, content };
+        },
+
+        clearUserNote() {
+            localStorage.removeItem('zh-portal-notepad');
+            return { success: true, message: 'Note cleared from browser.' };
+        }
+    };
+    // --- END: MOCK BACKEND ---
+
+
+    // --- START: LOGIN & INITIALIZATION LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginScreen = document.getElementById('login-screen');
+        const mainApp = document.getElementById('main-app');
+        const loginStatus = document.getElementById('login-status');
+
+        function attemptLogin(role) {
+            MOCK_DATA.currentUserRole = role;
+            loginStatus.textContent = 'Signing in...';
+            document.querySelectorAll('.btn-login').forEach(b => b.disabled = true);
+
+            setTimeout(() => {
+                loginScreen.classList.add('is-hidden');
+                document.body.classList.remove('login-active');
+                mainApp.style.display = 'block';
+                // Initialize the main application
+                initializeApp();
+            }, 1000);
+        }
+
+        document.getElementById('login-student').addEventListener('click', () => attemptLogin('student'));
+        document.getElementById('login-staff').addEventListener('click', () => attemptLogin('staff'));
+        document.getElementById('login-admin').addEventListener('click', () => attemptLogin('admin'));
+    });
+    // --- END: LOGIN LOGIC ---
+
+
+    // --- START: MAIN APPLICATION SCRIPT (ADAPTED) ---
+    function initializeApp() {
+        document.title = "Zhonghua SIL Portal";
+
+        // --- THEME TOGGLE LOGIC ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const applyTheme = (theme) => {
+            if (theme === 'dark') { body.classList.add('dark-mode'); } 
+            else { body.classList.remove('dark-mode'); }
+        };
+        const savedTheme = localStorage.getItem('zh-portal-theme');
+        if (savedTheme) { applyTheme(savedTheme); } 
+        else {
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(prefersDark ? 'dark' : 'light');
+        }
+        themeToggle.addEventListener('click', () => {
+            const isDarkMode = body.classList.contains('dark-mode');
+            if (isDarkMode) { applyTheme('light'); localStorage.setItem('zh-portal-theme', 'light'); } 
+            else { applyTheme('dark'); localStorage.setItem('zh-portal-theme', 'dark'); }
+        });
+
+        // --- MAIN APP LOGIC ---
+        const app = {
+            state: { currentUser: null, currentView: 'homepage', isTransitioning: false, classData: {}, activeStudentList: { className: null } },
+            elements: { 
+                container: document.getElementById('app-container'),
+                userName: document.getElementById('user-name'), 
+                taskbar: document.querySelector('.taskbar'), 
+                backButton: document.querySelector('.back-button'), 
+                noteTextarea: document.getElementById('note-textarea'),
+                messageArea: document.getElementById('message-area'),
+                confirmClearModal: document.getElementById('confirm-clear-modal'),
+                tutorialModal: document.getElementById('tutorial-modal') 
+            },
+            init() {
+              this.events.init();
+              app.elements.container.style.opacity = '0'; 
+              this.api.getUserData().then(userData => this.handleUserDataSuccess(userData)).catch(err => this.handleUserDataFailure(err));
+            },
+            handleUserDataSuccess(userData) {
+              if (userData && userData.error) { this.handleUserDataFailure(userData.error); return; }
+              this.state.currentUser = userData;
+              this.elements.userName.textContent = userData.name;
+              this.ui.updateRoleUI(userData.role);
+              app.elements.container.style.opacity = '1'; 
+              this.ui.showView('homepage');
+            },
+            handleUserDataFailure(error) {
+              console.error('CRITICAL FAILURE:', error);
+              const errorMessage = (error && error.message) ? error.message : "A critical error occurred while loading your profile. Please refresh the page.";
+              this.elements.container.innerHTML = `<div class="error-message">${errorMessage}</div>`;
+              this.elements.container.style.opacity = '1';
+            },
+            events: {
+              init() { 
+                document.body.addEventListener('click', this.handleGlobalClick.bind(this)); 
+                app.elements.noteTextarea.addEventListener('input', () => {
+                    const text = app.elements.noteTextarea.value;
+                    const wordCounter = document.getElementById('word-counter');
+                    if (text.trim() === '') { wordCounter.textContent = '0 words'; return; }
+                    const wordCount = text.trim().split(/\s+/).length;
+                    wordCounter.textContent = `${wordCount} word${wordCount === 1 ? '' : 's'}`;
+                });
+              },
+              handleGlobalClick(e) {
+                const target = e.target;
+                const viewTarget = target.closest('[data-view]');
+                const actionTarget = target.closest('[data-action]');
+                
+                if (viewTarget) { app.ui.showView(viewTarget.dataset.view); }
+                if (actionTarget) {
+                  e.preventDefault();
+                  const { action, className, studentEmail, subIndex } = actionTarget.dataset;
+                  switch (action) {
+                    case 'logout': app.ui.handleLogout(); break;
+                    case 'toggle-details': app.ui.toggleDetails(actionTarget); break;
+                    case 'view-class': app.ui.renderStudentList(className); break;
+                    case 'back-to-classes': app.ui.renderClassList(); break;
+                    case 'show-comment-view': app.ui.renderCommentView({ studentEmail, subIndex }); break;
+                    case 'back-to-student-list': app.ui.showView('statistics', () => app.ui.renderStudentList(app.state.activeStudentList.className)); break;
+                    case 'submit-comment': app.ui.handleCommentSubmit(actionTarget); break;
+                    case 'save-note': app.notepad.save(); break;
+                    case 'load-note': app.notepad.load(); break;
+                    case 'clear-editor': app.ui.showModal(app.elements.confirmClearModal); break;
+                    case 'confirm-clear': app.notepad.clear(); app.ui.hideModal(app.elements.confirmClearModal); break;
+                    case 'export-text': app.notepad.export(); break;
+                    case 'close-modal': app.ui.hideModal(actionTarget.closest('.modal-overlay')); break;
+                    case 'start-tutorial': app.ui.showTutorial(); break;
+                  }
+                }
+              }
+            },
+            api: {
+              // Replace google.script.run with our mockApi calls
+              getUserData() { return mockApi.run('getUserData'); },
+              getLogoutUrl() { return mockApi.run('getLogoutUrl'); },
+              getDashboardData() { return mockApi.run('getDashboardDataForUser'); },
+              getStatisticsData() { return mockApi.run('getStatisticsData'); },
+              saveComment(id, text) { return mockApi.run('saveComment', id, text); },
+              markCommentAsRead(id) { return mockApi.run('markCommentAsRead', id); },
+              saveNote(content) { return mockApi.run('saveUserNote', content); },
+              loadNote() { return mockApi.run('loadUserNote'); },
+              clearNote() { return mockApi.run('clearUserNote'); }
+            },
+            notepad: {
+                async save() {
+                    const content = app.elements.noteTextarea.value;
+                    app.ui.displayMessage('Saving...', 'success');
+                    try {
+                        const result = await app.api.saveNote(content);
+                        if (result.error) throw new Error(result.error);
+                        app.ui.displayMessage(result.message, 'success');
+                    } catch (err) { app.ui.displayMessage(`Error: ${err.message}`, 'error'); }
+                },
+                async load() {
+                    app.ui.displayMessage('Loading...', 'success');
+                    try {
+                        const result = await app.api.loadNote();
+                        if (result.error) throw new Error(result.error);
+                        app.elements.noteTextarea.value = result.content;
+                        app.elements.noteTextarea.dispatchEvent(new Event('input'));
+                        app.ui.displayMessage('Draft loaded from browser.', 'success');
+                    } catch (err) { app.ui.displayMessage(`Error: ${err.message}`, 'error'); }
+                },
+                async clear() {
+                    app.ui.displayMessage('Clearing draft...', 'success');
+                    try {
+                        const result = await app.api.clearNote();
+                        if (result.error) throw new Error(result.error);
+                        app.elements.noteTextarea.value = '';
+                        app.elements.noteTextarea.dispatchEvent(new Event('input'));
+                        app.ui.displayMessage(result.message, 'success');
+                    } catch (err) { app.ui.displayMessage(`Error: ${err.message}`, 'error'); }
+                },
+                export() {
+                    const text = app.elements.noteTextarea.value;
+                    const blob = new Blob([text], { type: 'text/plain' });
+                    const anchor = document.createElement('a');
+                    anchor.download = 'reflection_draft.txt';
+                    anchor.href = window.URL.createObjectURL(blob);
+                    anchor.click();
+                    window.URL.revokeObjectURL(anchor.href);
+                    app.ui.displayMessage('Draft exported as .txt file.', 'success');
+                }
+            },
+            ui: {
+              handleLogout() {
+                const logoutBtn = document.getElementById('logout-button');
+                logoutBtn.disabled = true;
+                
+                document.body.classList.add('is-logging-out');
+
+                let logoutOverlay = document.createElement('div');
+                logoutOverlay.id = 'loading-overlay';
+                logoutOverlay.innerHTML = '<div class="loader"></div><p>Logging out...</p>';
+                document.body.appendChild(logoutOverlay);
+                logoutOverlay.classList.add('is-active');
+                
+                app.api.getLogoutUrl().then(url => {
+                  window.location.href = url; // Reloads the page
+                }).catch(err => {
+                  alert("Could not log out. Please refresh the page.");
+                  window.location.reload();
+                });
+              },
+              showView(viewId, onComplete) {
+                if (viewId === app.state.currentView || app.state.isTransitioning) { if (onComplete) onComplete(); return; }
+                app.state.isTransitioning = true;
+                const oldView = document.getElementById(app.state.currentView);
+                const newView = document.getElementById(viewId);
+                oldView?.classList.remove('is-active');
+                setTimeout(() => {
+                  oldView?.classList.add('is-hidden');
+                  if (newView) {
+                    newView.classList.remove('is-hidden');
+                    if (viewId === 'dashboard' && !newView.dataset.loaded) app.ui.renderDashboard();
+                    if (viewId === 'statistics' && !newView.dataset.loaded) app.ui.renderStatistics();
+                    if (viewId === 'comment' && !newView.querySelector('.comment-view-header')) app.ui.renderPlaceholder(newView, '👈', 'Select a Submission', "Go to 'Submissions' and select a reflection to comment on.");
+                    if (viewId === 'notepad' && !newView.dataset.loaded) {
+                        app.notepad.load(); // Load notepad content on first view
+                        newView.dataset.loaded = true;
+                    }
+
+                    const onTransitionEnd = () => {
+                      app.state.isTransitioning = false;
+                      if (onComplete) onComplete();
+                      newView.removeEventListener('transitionend', onTransitionEnd);
+                    };
+                    newView.addEventListener('transitionend', onTransitionEnd);
+                    setTimeout(() => newView.classList.add('is-active'), 20);
+                  } else { app.state.isTransitioning = false; }
+                  const isHomePage = (viewId === 'homepage');
+                  app.elements.backButton.classList.toggle('is-hidden', isHomePage);
+                  app.elements.taskbar.classList.toggle('is-hidden', isHomePage);
+                  document.querySelectorAll('.taskbar-tab').forEach(t => t.classList.remove('active'));
+                  document.querySelector(`.taskbar-tab[data-view="${viewId}"]`)?.classList.add('active');
+                  app.state.currentView = viewId;
+                }, 300);
+              },
+              updateRoleUI(role) {
+                document.body.classList.remove('role-student', 'role-staff', 'role-admin');
+                document.body.classList.add(`role-${role}`);
+
+                const badge = document.getElementById('taskbar-status-badge');
+                badge.className = 'taskbar-status-badge';
+                badge.innerHTML = ''; 
+                if (role === 'admin') { badge.innerHTML = '<span>⭐</span><span>ADMIN</span>'; badge.classList.add('status-badge--admin'); }
+                else if (role === 'staff') { badge.innerHTML = '<span>🏛️</span><span>STAFF</span>'; badge.classList.add('status-badge--staff'); }
+              },
+              toggleDetails(headerElement) {
+                const row = headerElement.closest('.stat-student-row');
+                const list = row.querySelector('.stat-submissions-list');
+                const icon = headerElement.querySelector('.stat-toggle-icon');
+                const isOpen = list.classList.toggle('is-open');
+                headerElement.classList.toggle('is-open', isOpen);
+                if (icon) icon.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                
+                if(app.state.currentUser.role === 'student' && isOpen) {
+                    const unreadComments = list.querySelectorAll('.teacher-comment-card.unread-comment');
+                    if (unreadComments.length > 0) {
+                        app.api.markCommentAsRead(row.dataset.submissionId).then(() => {
+                            unreadComments.forEach(card => card.classList.remove('unread-comment'));
+                            const commentIcon = row.querySelector('.comment-icon-wrapper.is-pulsing');
+                            if(commentIcon) commentIcon.classList.remove('is-pulsing');
+                            if (!document.querySelector('.teacher-comment-card.unread-comment')) {
+                                document.querySelector('.taskbar-tab[data-view="dashboard"] .notification-dot').classList.remove('is-visible');
+                            }
+                        });
+                    }
+                }
+              },
+              renderPlaceholder(view, iconSymbol, title, text) {
+                const container = view.querySelector('.content-wrapper');
+                const template = document.getElementById('template-placeholder');
+                const clone = template.content.cloneNode(true);
+                clone.querySelector('.placeholder-icon-wrapper').textContent = iconSymbol;
+                clone.querySelector('h3').textContent = title;
+                clone.querySelector('p').textContent = text;
+                container.innerHTML = '';
+                container.appendChild(clone);
+              },
+              async renderDashboard() {
+                const view = document.getElementById('dashboard');
+                const container = view.querySelector('.content-wrapper');
+                container.innerHTML = `<div class="loader"></div>`;
+                try {
+                  const data = await app.api.getDashboardData();
+                  if (!data) throw new Error("Received an empty response from the server.");
+                  if (data.error) throw new Error(data.error);
+                  
+                  view.dataset.loaded = true;
+                  container.innerHTML = '';
+
+                  if (data.latestSubmission) {
+                    const infoTemplate = document.getElementById('template-user-info-card');
+                    const infoClone = infoTemplate.content.cloneNode(true);
+                    const roleCapitalized = data.role.charAt(0).toUpperCase() + data.role.slice(1);
+                    infoClone.querySelector('[data-field="user-name-and-role"]').textContent = `${data.name}, ${roleCapitalized}`;
+                    const latestSub = data.submissions.length > 0 ? data.submissions.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp))[0] : null;
+
+                    if (latestSub) {
+                        infoClone.querySelector('[data-field="latest-sil-number"]').textContent = latestSub.silNumber || 'N/A';
+                        infoClone.querySelector('[data-field="latest-sil-tier"]').textContent = `Tier: ${latestSub.tier || 'N/A'}`;
+                    }
+                    infoClone.querySelector('[data-field="learn"]').textContent = data.latestSubmission.learn || 'Not provided.';
+                    infoClone.querySelector('[data-field="challenge"]').textContent = data.latestSubmission.challenge || 'Not provided.';
+                    infoClone.querySelector('[data-field="grow"]').textContent = data.latestSubmission.grow || 'Not provided.';
+                    container.appendChild(infoClone);
+                  }
+
+                  const submissionsTitle = document.createElement('h3');
+                  submissionsTitle.className = 'section-title';
+                  submissionsTitle.style.textAlign = 'left';
+                  submissionsTitle.style.marginTop = '32px';
+                  submissionsTitle.textContent = 'Your Submissions';
+                  container.appendChild(submissionsTitle);
+
+                  const listContainer = document.createElement('div');
+                  listContainer.className = 'statistics-container';
+
+                  if (data.hasUnreadComments) { document.querySelector('.taskbar-tab[data-view="dashboard"] .notification-dot').classList.add('is-visible'); }
+                  
+                  if (!data.submissions || data.submissions.length === 0) {
+                    this.renderPlaceholder({querySelector: () => listContainer}, '🎉', 'All Clear!', 'You have no reflections submitted yet. Head to the Submit tab!');
+                    container.appendChild(listContainer);
+                    return; 
+                  }
+                  
+                  const template = document.getElementById('template-dashboard-item');
+                  data.submissions.forEach(sub => {
+                      const clone = template.content.cloneNode(true);
+                      const row = clone.querySelector('.stat-student-row');
+                      row.dataset.submissionId = sub.submissionId;
+                      clone.querySelector('.stat-header-name').textContent = sub.silNumber;
+                      clone.querySelector('.stat-header-email').textContent = `Tier: ${sub.tier} | Submitted: ${new Date(sub.timestamp).toLocaleDateString()}`;
+                      clone.querySelector('[data-field="learn"]').textContent = sub.learn || 'Not provided.';
+                      clone.querySelector('[data-field="challenge"]').textContent = sub.challenge || 'Not provided.';
+                      clone.querySelector('[data-field="grow"]').textContent = sub.grow || 'Not provided.';
+                      
+                      const detailsWrapper = clone.querySelector('.details-inner-wrapper');
+                      const templateCard = clone.querySelector('.teacher-comment-card');
+                      if(templateCard) templateCard.remove(); 
+
+                      if (sub.comment && sub.comment.length > 0) {
+                        const commentIcon = clone.querySelector('.comment-icon-wrapper');
+                        commentIcon.classList.remove('is-hidden');
+                        let hasUnread = false;
+
+                        sub.comment.forEach(commentObj => {
+                            if(!templateCard) return;
+                            const newCommentCard = templateCard.cloneNode(true);
+                            newCommentCard.classList.remove('is-hidden');
+                            newCommentCard.querySelector('.detail-label').textContent = `Comment from ${commentObj.commenter || 'Teacher'}`;
+                            newCommentCard.querySelector('[data-field="comment"]').textContent = commentObj.text;
+                            
+                            if (commentObj.status === 'unread') {
+                                newCommentCard.classList.add('unread-comment');
+                                hasUnread = true;
+                            }
+                            detailsWrapper.appendChild(newCommentCard);
+                        });
+
+                        if(hasUnread) { commentIcon.classList.add('is-pulsing'); }
+                      }
+                      listContainer.appendChild(clone);
+                  });
+                  container.appendChild(listContainer);
+                } catch (err) {
+                  console.error("Dashboard Error:", err);
+                  container.innerHTML = `<div class="error-message">Error loading dashboard: ${err.message}</div>`;
+                }
+              },
+              async renderStatistics() {
+                const view = document.getElementById('statistics');
+                const container = view.querySelector('.content-wrapper');
+                container.innerHTML = `<div class="loader"></div>`;
+                try {
+                    const result = await app.api.getStatisticsData();
+                    if (!result) throw new Error("Received an empty response from the server.");
+                    if (result.error) throw new Error(result.error);
+                    app.state.classData = result.data;
+                    view.dataset.loaded = true;
+                    this.renderClassList();
+                } catch (err) {
+                    console.error("Statistics Error:", err);
+                    container.innerHTML = `<div class="error-message">Error: ${err.message}</div>`;
+                }
+              },
+              renderClassList() {
+                const view = document.getElementById('statistics');
+                const container = view.querySelector('.content-wrapper');
+                container.innerHTML = `<h3 class="section-title">Submissions by Class</h3>`;
+                const classGrid = document.createElement('div');
+                classGrid.className = 'class-grid';
+                
+                const sortedClasses = Object.keys(app.state.classData).sort();
+                if (sortedClasses.length === 0) {
+                    this.renderPlaceholder({querySelector: () => container}, '📭', 'No Classes Found', 'There are no students or classes assigned in the system yet.');
+                    return;
+                }
+
+                const template = document.getElementById('template-class-card');
+                sortedClasses.forEach(className => {
+                    const clone = template.content.cloneNode(true);
+                    const card = clone.querySelector('.class-card');
+                    card.dataset.action = 'view-class';
+                    card.dataset.className = className;
+                    clone.querySelector('.class-card-name').textContent = className;
+                    const totalStudents = app.state.classData[className].length;
+                    clone.querySelector('.class-card-count').textContent = `${totalStudents} student(s) in class`;
+                    classGrid.appendChild(clone);
+                });
+                container.appendChild(classGrid);
+              },
+              renderStudentList(className) {
+                app.state.activeStudentList.className = className;
+                const view = document.getElementById('statistics');
+                const container = view.querySelector('.content-wrapper');
+                const studentData = app.state.classData[className];
+                
+                container.innerHTML = `<div class="student-list-header"><button class="btn btn-outline" data-action="back-to-classes">← All Classes</button><h3 class="section-title">${className}</h3></div>`;
+                const listContainer = document.createElement('div');
+                listContainer.className = 'statistics-container';
+                
+                if (!studentData || studentData.length === 0) { listContainer.innerHTML = `<div class="no-submissions">No students found for this class.</div>`; } 
+                else {
+                  const template = document.getElementById('template-student-row');
+                  const subTemplate = document.getElementById('template-submission-entry');
+                  studentData.forEach(student => {
+                      const rowClone = template.content.cloneNode(true);
+                      rowClone.querySelector('.stat-header-name').textContent = student.name;
+                      rowClone.querySelector('.stat-header-email').textContent = student.email;
+                      rowClone.querySelector('.stat-submission-count').textContent = `${student.submissions.length} Submission${student.submissions.length === 1 ? '' : 's'}`;
+                      
+                      const hasComment = student.submissions.some(s => s.comment && s.comment.length > 0);
+                      if(hasComment) rowClone.querySelector('.comment-icon-wrapper').classList.remove('is-hidden');
+                      
+                      const detailsWrapper = rowClone.querySelector('.details-inner-wrapper');
+                      if (student.submissions.length > 0) {
+                        student.submissions.forEach((sub, index) => {
+                            const subClone = subTemplate.content.cloneNode(true);
+                            subClone.querySelector('[data-field="sil-number-ts"]').textContent = `${sub.silNumber} (Submitted: ${new Date(sub.timestamp).toLocaleDateString()})`;
+                            subClone.querySelector('[data-field="learn"]').textContent = sub.learn || 'Not provided.';
+                            subClone.querySelector('[data-field="challenge"]').textContent = sub.challenge || 'Not provided.';
+                            subClone.querySelector('[data-field="grow"]').textContent = sub.grow || 'Not provided.';
+                            
+                            if (app.state.currentUser.role === 'staff' || app.state.currentUser.role === 'admin') { 
+                                const actionsContainer = subClone.querySelector('.submission-actions');
+                                const commentBtn = document.createElement('button');
+                                commentBtn.className = 'btn-comment btn';
+                                commentBtn.dataset.action = 'show-comment-view';
+                                commentBtn.dataset.studentEmail = student.email;
+                                commentBtn.dataset.subIndex = index;
+                                
+                                let buttonText = 'Leave Comment';
+                                if (sub.comment && sub.comment.length > 0) {
+                                    buttonText = 'View / Add Comment';
+                                    commentBtn.classList.add('has-comment');
+                                }
+
+                                if (app.state.currentUser.role === 'admin') { // Admin view is read-only
+                                    commentBtn.disabled = true;
+                                    buttonText = 'View Comments';
+                                }
+
+                                commentBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>${buttonText}</span>`;
+                                actionsContainer.appendChild(commentBtn);
+                            }
+                            detailsWrapper.appendChild(subClone);
+                        });
+                      } else { detailsWrapper.innerHTML = `<div class="no-submissions">This student has no submissions yet.</div>`; }
+                      listContainer.appendChild(rowClone);
+                  });
+                }
+                container.appendChild(listContainer);
+              },
+              renderCommentView({ studentEmail, subIndex }) {
+                try {
+                  const className = app.state.activeStudentList.className;
+                  if (!className || !app.state.classData[className]) throw new Error("Could not find active class data.");
+                  const student = app.state.classData[className].find(s => s.email === studentEmail);
+                  if (!student) throw new Error(`Could not find student.`);
+                  const submission = student.submissions[parseInt(subIndex, 10)];
+                  if (!submission) throw new Error(`Could not find submission.`);
+                  
+                  app.ui.showView('comment', () => {
+                    const view = document.getElementById('comment');
+                    const container = view.querySelector('.content-wrapper');
+                    const template = document.getElementById('template-comment-view');
+                    const clone = template.content.cloneNode(true);
+
+                    clone.querySelector('[data-field="student-name"]').textContent = student.name;
+                    clone.querySelector('[data-field="student-email"]').textContent = student.email;
+                    clone.querySelector('[data-field="sil-number"]').textContent = submission.silNumber;
+                    clone.querySelector('[data-field="learn"]').textContent = submission.learn;
+                    clone.querySelector('[data-field="challenge"]').textContent = submission.challenge;
+                    clone.querySelector('[data-field="grow"]').textContent = submission.grow;
+                    
+                    const reflectionPreview = clone.querySelector('.reflection-preview');
+
+                    if (submission.comment && submission.comment.length > 0) {
+                        const prevCommentsContainer = document.createElement('div');
+                        prevCommentsContainer.className = 'previous-comments-container';
+                        const title = document.createElement('h4');
+                        title.className = 'detail-label';
+                        title.textContent = "Previous Comments";
+                        prevCommentsContainer.appendChild(title);
+                        submission.comment.slice().reverse().forEach(commentObj => {
+                            const commentItem = document.createElement('div');
+                            commentItem.className = 'previous-comment-item';
+                            const commenterNameEl = document.createElement('p');
+                            commenterNameEl.className = 'commenter-name';
+                            commenterNameEl.textContent = `${commentObj.commenter || 'Teacher'} wrote:`;
+                            const commentTextEl = document.createElement('p');
+                            commentTextEl.className = 'comment-text';
+                            commentTextEl.textContent = commentObj.text;
+                            commentItem.appendChild(commenterNameEl);
+                            commentItem.appendChild(commentTextEl);
+                            prevCommentsContainer.appendChild(commentItem);
+                        });
+                        reflectionPreview.parentNode.insertBefore(prevCommentsContainer, reflectionPreview.nextSibling);
+                    }
+
+                    clone.querySelector('#comment-textarea').value = '';
+                    const submitBtn = clone.querySelector('[data-action="submit-comment"]');
+                    submitBtn.dataset.submissionId = submission.submissionId;
+                    
+                    // Disable commenting for Admin role
+                    if (app.state.currentUser.role === 'admin') {
+                        clone.querySelector('.comment-input-area').innerHTML = '<p style="text-align:center; color: var(--c-text-secondary);">Admin view is read-only. Commenting is disabled.</p>';
+                    }
+
+                    container.innerHTML = '';
+                    container.appendChild(clone);
+                  });
+                } catch (err) {
+                    console.error("Failed to render comment view:", err);
+                    alert(`Could not open the comment screen. A data error occurred: ${err.message}`);
+                }
+              },
+              async handleCommentSubmit(button) {
+                const { submissionId } = button.dataset;
+                const textarea = document.getElementById('comment-textarea');
+                const commentText = textarea.value.trim();
+                
+                if (!commentText) { alert("Comment cannot be empty."); return; }
+                button.disabled = true;
+                button.textContent = 'Saving...';
+                
+                try {
+                  const result = await app.api.saveComment(submissionId, commentText);
+                  if (result.error) throw new Error(result.error);
+                  this.showView('statistics', () => this.renderStudentList(app.state.activeStudentList.className));
+                } catch (err) {
+                    alert(`Error saving comment: ${err.message}`);
+                    button.disabled = false;
+                    button.textContent = 'Save Comment';
+                }
+              },
+              displayMessage(text, type = 'success') {
+                  const area = app.elements.messageArea;
+                  area.textContent = text;
+                  area.className = `message ${type}`;
+                  setTimeout(() => { area.textContent = ''; area.className = 'message'; }, 4000);
+              },
+              showModal(modalElement) { modalElement.classList.remove('is-hidden'); },
+              hideModal(modalElement) { modalElement.classList.add('is-hidden'); },
+              _buildTutorialSteps(steps) {
+                const list = document.createElement('ol');
+                steps.forEach(step => {
+                    const listItem = document.createElement('li');
+                    const stepTitle = document.createElement('strong');
+                    stepTitle.textContent = step.title;
+                    const stepDesc = document.createElement('span');
+                    stepDesc.textContent = ` - ${step.description}`;
+                    listItem.appendChild(stepTitle);
+                    listItem.appendChild(stepDesc);
+                    list.appendChild(listItem);
+                });
+                return list;
+              },
+              showTutorial() {
+                if (!app.state.currentUser || !app.state.currentUser.role) {
+                    alert("User profile is still loading, please try again in a moment.");
+                    return; 
+                }
+                const role = app.state.currentUser.role;
+                const modal = app.elements.tutorialModal;
+                const titleEl = modal.querySelector('#tutorial-title');
+                const contentEl = modal.querySelector('#tutorial-content');
+                let steps = [];
+                const studentSteps = [ { title: 'Dashboard', description: 'View your latest reflection, past submissions, and any new comments from your teacher.' }, { title: 'Reflections', description: 'Access the official templates and guiding questions for your reflection.' }, { title: 'Draft Pad', description: 'Use this notepad to write, save, and export drafts of your reflection before submitting.' }, { title: 'Submit', description: 'When you are ready, use the embedded Google Form to submit your final reflection.' } ];
+                const staffSteps = [ { title: 'View Submissions', description: 'See all the classes you are assigned to. Click a class to view all students.' }, { title: 'Check Progress', description: 'Click on a student to expand the list of all their submissions, sorted from newest to oldest.' }, { title: 'Leave Comments', description: 'Click the "Leave Comment" button on any submission to provide feedback and see comments from other teachers.' } ];
+                const adminSteps = [ { title: 'Full Access', description: 'As an Admin, you can view all submissions from all classes and students in the school.'}, { title: 'Student View', description: 'You also have access to the student dashboard to view your own submissions and use the Draft Pad.'}, { title: 'Read-Only', description: 'Commenting is restricted to users with the "Staff" role to maintain clear feedback channels.'} ];
+                switch(role) {
+                    case 'student': titleEl.textContent = 'Student Portal Guide'; steps = studentSteps; break;
+                    case 'staff': titleEl.textContent = 'Staff Portal Guide'; steps = staffSteps; break;
+                    case 'admin': titleEl.textContent = 'Admin Portal Guide'; steps = adminSteps; break;
+                }
+                contentEl.innerHTML = '';
+                contentEl.appendChild(this._buildTutorialSteps(steps));
+                this.showModal(modal);
+              }
+            }
+        };
+      app.init();
+    }
+    // --- END: MAIN APPLICATION SCRIPT ---
+  </script>
+</body>
+</html>
